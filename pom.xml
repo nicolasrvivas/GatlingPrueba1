@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.qanova2</groupId>
+  <artifactId>Proy_Gatling_Maven</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <scala.version>2.12.8</scala.version>
+    <scala.compat.version>2.12</scala.compat.version>
+    <encoding>UTF-8</encoding>
+    <gatling.version>3.0.3</gatling.version>
+    <gatling-plugin.version>3.0.2</gatling-plugin.version>
+    <scala-maven-plugin.version>4.0.1</scala-maven-plugin.version>
+    <gatling-maven-plugin.version>3.0.2</gatling-maven-plugin.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-app</artifactId>
+        <version>${gatling.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-recorder</artifactId>
+        <version>${gatling.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.gatling.highcharts</groupId>
+        <artifactId>gatling-charts-highcharts</artifactId>
+        <version>${gatling.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala.version}</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/io.gatling/gatling-maven-plugin -->
+      <dependency>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-maven-plugin</artifactId>
+        <version>${gatling-plugin.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.4</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.specs</groupId>
+        <artifactId>specs</artifactId>
+        <version>1.2.5</version>
+        <scope>test</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.gatling.highcharts</groupId>
+      <artifactId>gatling-charts-highcharts</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-app</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.gatling</groupId>
+      <artifactId>gatling-recorder</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>net.alchim31.maven</groupId>
+          <artifactId>scala-maven-plugin</artifactId>
+          <version>${scala-maven-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <args>
+                <arg>-target:jvm-1.8</arg>
+                <arg>-deprecation</arg>
+                <arg>-feature</arg>
+                <arg>-unchecked</arg>
+                <arg>-language:implicitConversions</arg>
+                <arg>-language:postfixOps</arg>
+              </args>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution><id>default-compile</id><phase>none</phase></execution>
+          <execution>
+            <id>default-testCompile</id><phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- run scala test -->
+      <plugin>
+        <groupId>org.scalatest</groupId>
+        <artifactId>scalatest-maven-plugin</artifactId>
+        <executions><execution>
+          <id>test</id>
+          <goals><goal>test</goal></goals>
+        </execution></executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>once</forkMode>
+          <useFile>false</useFile>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.0</version>
+      </plugin>
+
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>${scala-maven-plugin.version}</version>
+        <configuration>
+          <ccTestGoals>scatatest:test</ccTestGoals>
+        </configuration>
+      </plugin>
+      <!-- Gatling Maven plugin that runs the load-simulation. -->
+      <plugin>
+        <groupId>io.gatling</groupId>
+        <artifactId>gatling-maven-plugin</artifactId>
+        <version>${gatling-plugin.version}</version>
+        <configuration>
+          <simulationClass>com.qanova2.RecordedSimulation1</simulationClass>
+          <jvmArgs>
+            <jvmArg>-Denv=stable</jvmArg>
+            <jvmArg>-Dusers=${users}</jvmArg>
+            <jvmArg>-Drampup=${rampup}</jvmArg>
+            <jvmArg>-Dduration=${duration}</jvmArg>
+            <jvmArg>-Dthroughput=${throughput}</jvmArg>
+            <jvmArg>-Xms2g</jvmArg>
+            <jvmArg>-Xmx5g</jvmArg>
+          </jvmArgs>
+          <!--<fork>true</fork>-->
+          <propagateSystemProperties>true</propagateSystemProperties>
+        </configuration>
+      </plugin>
+
+
+    </plugins>
+  </build>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <configuration>
+          <scalaVersion>${scala.version}</scalaVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>
