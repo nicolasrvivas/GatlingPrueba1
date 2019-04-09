@@ -200,7 +200,7 @@ class RecordedSimulation3 extends Simulation {
 		.exec(http("RecordedSimulation3_44")
 			.post("/piloto/pluginAppObj_4_01/dbviewer.php?action=list&jtStartIndex=0&jtPageSize=10")
 			.headers(headers_44)
-			.formParam("filter", "niciolas"))
+			.formParam("filter", "nicolas"))
 		.pause(3)
 		.exec(http("RecordedSimulation3_45")
 			.get("/piloto/res/imlogout.php")

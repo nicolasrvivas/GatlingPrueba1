@@ -1,0 +1,10 @@
+{
+  "simulation": "com.qanova2.RecordedSimulation1",
+  "simulationId": "recordedsimulation1",
+  "start": 1554827739723,
+  "description": "",
+  "scenarios": ["RecordedSimulation1"],
+  "assertions": [
+
+  ]
+}
